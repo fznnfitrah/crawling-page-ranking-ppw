@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Crawler & PageRank Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Web Crawler & PageRank Graph</h1>
+      <p>Masukkan link awal dan kedalaman crawling untuk memetakan relasi tautan dan melihat 10 link dengan skor PageRank tertinggi.</p>
+    </header>
+
+    <!-- Form 2 Input -->
+    <section class="card">
+      <form id="crawl-form" class="crawl-form">
+        <div class="form-group flex-grow">
+          <label for="seed-url">Link Website (Seed URL)</label>
+          <input
+            type="url"
+            id="seed-url"
+            name="url"
+            placeholder="https://example.com"
+            required
+          />
+        </div>
+
+        <div class="form-group depth-group">
+          <label for="crawl-depth">Kedalaman (Depth)</label>
+          <input
+            type="number"
+            id="crawl-depth"
+            name="depth"
+            min="0"
+            max="5"
+            value="2"
+            required
+          />
+        </div>
+
+        <div class="form-group action-group">
+          <button type="submit" id="submit-btn">Mulai Crawling</button>
+        </div>
+      </form>
+
+      <div id="status-message" class="status-message hidden"></div>
+    </section>
+
+    <!-- Statistik Singkat -->
+    <section id="stats-section" class="stats-grid hidden">
+      <div class="stat-box">
+        <span class="stat-label">Halaman Di-crawl</span>
+        <strong id="stat-crawled" class="stat-value">0</strong>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Total Node (Link)</span>
+        <strong id="stat-nodes" class="stat-value">0</strong>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Total Edge (Relasi)</span>
+        <strong id="stat-edges" class="stat-value">0</strong>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Error / Timeout</span>
+        <strong id="stat-errors" class="stat-value">0</strong>
+      </div>
+    </section>
+
+    <!-- Visualisasi Graf 2D -->
+    <section id="graph-section" class="card hidden">
+      <div class="section-header">
+        <h2>Visualisasi Graf Hasil Crawling (2D)</h2>
+        <div class="legend">
+          <span class="legend-item"><i class="dot dot-seed"></i> Seed URL</span>
+          <span class="legend-item"><i class="dot dot-top10"></i> Top 10 PageRank</span>
+          <span class="legend-item"><i class="dot dot-normal"></i> Node Lainnya</span>
+        </div>
+      </div>
+      <div id="graph-container" class="graph-container"></div>
+      <p class="helper-text">
+        Tips: Geser canvas untuk menggeser tampilan, scroll untuk zoom, klik atau arahkan kursor ke node untuk melihat detail PageRank dan derajat tautan.
+      </p>
+    </section>
+
+    <!-- Top 10 PageRank -->
+    <section id="top10-section" class="card hidden">
+      <h2>Top 10 Link dengan Skor PageRank Tertinggi</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Peringkat</th>
+              <th>URL</th>
+              <th>Skor PageRank</th>
+              <th>Depth</th>
+              <th>In-Degree</th>
+              <th>Out-Degree</th>
+            </tr>
+          </thead>
+          <tbody id="top10-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
